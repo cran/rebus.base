@@ -2,7 +2,7 @@
 % Please edit documentation in R/misc.R
 \name{literal}
 \alias{literal}
-\title{Treat part of a regular expression literally.}
+\title{Treat part of a regular expression literally}
 \usage{
 literal(x)
 }
@@ -13,7 +13,8 @@ literal(x)
 A character vector representing part or all of a regular expression.
 }
 \description{
-Treats its contents as literal characters.
+Treats its contents as literal characters. Equivalent to using
+\code{fixed = TRUE}, but for part of the pattern rather than all of it.
 }
 \examples{
 (rx <- digit(1, 3))
