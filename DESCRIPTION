@@ -1,7 +1,7 @@
 Package: rebus.base
 Title: Core Functionality for the 'rebus' Package
-Version: 0.0-2
-Date: 2015-12-28
+Version: 0.0-3
+Date: 2017-04-25
 Author: Richard Cotton [aut, cre]
 Maintainer: Richard Cotton <richierocks@gmail.com>
 Authors@R: person("Richard", "Cotton", role = c("aut", "cre"), email =
@@ -16,13 +16,13 @@ Imports: stats
 Suggests: stringi, testthat
 License: Unlimited
 LazyData: true
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
 Collate: 'alternation.R' 'regex-methods.R' 'backreferences.R'
         'capture.R' 'internal.R' 'grouping-and-repetition.R'
         'constants.R' 'class-groups.R' 'concatenation.R'
         'compound-constants.R' 'escape_special.R' 'lookaround.R'
         'misc.R' 'mode-modifiers.R'
 NeedsCompilation: no
-Packaged: 2017-01-02 16:10:21 UTC; richierocks
+Packaged: 2017-04-25 15:22:09 UTC; richierocks
 Repository: CRAN
-Date/Publication: 2017-01-02 17:55:17
+Date/Publication: 2017-04-25 21:45:26 UTC

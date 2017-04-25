@@ -4,29 +4,31 @@
 \alias{ClassGroups}
 \alias{alnum}
 \alias{alpha}
-\alias{any_char}
-\alias{ascii_alnum}
-\alias{ascii_alpha}
-\alias{ascii_digit}
-\alias{ascii_lower}
-\alias{ascii_upper}
 \alias{blank}
-\alias{char_range}
 \alias{cntrl}
-\alias{dgt}
 \alias{digit}
 \alias{graph}
-\alias{hex_digit}
 \alias{lower}
-\alias{not_dgt}
-\alias{not_spc}
-\alias{not_wrd}
 \alias{printable}
 \alias{punct}
 \alias{space}
-\alias{spc}
 \alias{upper}
+\alias{hex_digit}
+\alias{any_char}
+\alias{grapheme}
+\alias{newline}
+\alias{dgt}
 \alias{wrd}
+\alias{spc}
+\alias{not_dgt}
+\alias{not_wrd}
+\alias{not_spc}
+\alias{ascii_digit}
+\alias{ascii_lower}
+\alias{ascii_upper}
+\alias{ascii_alpha}
+\alias{ascii_alnum}
+\alias{char_range}
 \title{Character classes}
 \usage{
 alnum(lo, hi, char_class = TRUE)
@@ -55,17 +57,21 @@ hex_digit(lo, hi, char_class = TRUE)
 
 any_char(lo, hi)
 
-dgt(lo, hi, char_class = TRUE)
+grapheme(lo, hi)
 
-wrd(lo, hi, char_class = TRUE)
+newline(lo, hi)
 
-spc(lo, hi, char_class = TRUE)
+dgt(lo, hi, char_class = FALSE)
 
-not_dgt(lo, hi, char_class = TRUE)
+wrd(lo, hi, char_class = FALSE)
 
-not_wrd(lo, hi, char_class = TRUE)
+spc(lo, hi, char_class = FALSE)
 
-not_spc(lo, hi, char_class = TRUE)
+not_dgt(lo, hi, char_class = FALSE)
+
+not_wrd(lo, hi, char_class = FALSE)
+
+not_spc(lo, hi, char_class = FALSE)
 
 ascii_digit(lo, hi, char_class = TRUE)
 
@@ -102,7 +108,9 @@ when using the ICU engine (that is, when using \code{stringi} or
 Unicode properties (\code{\link[rebus.unicode]{UnicodeProperty}}) may give
 you a more reliable match.
 There are also some generic character classes like \code{\\w} (representing
-lower or upper case letters or numbers or underscores).
+lower or upper case letters or numbers or underscores). Since version 0.0-3,
+these use the default \code{char_class = FALSE}, since they already act as
+character classes.
 Finally, there are ASCII-only ways of specifying letters like \code{a-zA-Z}.
 Which version you want depends upon how you want to deal with international
 characters, and the vagaries of the underlying regular expression engine.
@@ -124,8 +132,12 @@ space()
 upper()
 hex_digit()
 
-# Generic classes
+# Special chars
 any_char()
+grapheme()
+newline()
+
+# Generic classes
 dgt()
 wrd()
 spc()
@@ -170,6 +182,15 @@ p[!icu_matched]
 pcre_matched <- grepl(punct(), p)
 p[pcre_matched]
 p[!pcre_matched]
+
+# A grapheme is a character that can be defined by more than one code point
+# PCRE does not recognise the concept.
+x <- c("Chloe", "Chlo\\u00e9", "Chlo\\u0065\\u0301")
+stringi::stri_match_first_regex(x, "Chlo" \%R\% capture(grapheme()))
+
+# newline() matches three types of line ending: \\r, \\n, \\r\\n.
+# You can standardize line endings using
+stringi::stri_replace_all_regex("foo\\nbar\\r\\nbaz\\rquux", NEWLINE, "\\n")
 }
 \references{
 \url{http://www.regular-expressions.info/shorthand.html} and
@@ -178,4 +199,3 @@ p[!pcre_matched]
 \seealso{
 \code{\link[base]{regex}}, \code{\link[rebus.unicode]{Unicode}}
 }
-

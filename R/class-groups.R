@@ -14,7 +14,9 @@
 #' Unicode properties (\code{\link[rebus.unicode]{UnicodeProperty}}) may give
 #' you a more reliable match.
 #' There are also some generic character classes like \code{\\w} (representing
-#' lower or upper case letters or numbers or underscores).
+#' lower or upper case letters or numbers or underscores). Since version 0.0-3,
+#' these use the default \code{char_class = FALSE}, since they already act as
+#' character classes.
 #' Finally, there are ASCII-only ways of specifying letters like \code{a-zA-Z}.
 #' Which version you want depends upon how you want to deal with international
 #' characters, and the vagaries of the underlying regular expression engine.
@@ -38,8 +40,12 @@
 #' upper()
 #' hex_digit()
 #'
-#' # Generic classes
+#' # Special chars
 #' any_char()
+#' grapheme()
+#' newline()
+#'
+#' # Generic classes
 #' dgt()
 #' wrd()
 #' spc()
@@ -84,6 +90,15 @@
 #' pcre_matched <- grepl(punct(), p)
 #' p[pcre_matched]
 #' p[!pcre_matched]
+#'
+#' # A grapheme is a character that can be defined by more than one code point
+#' # PCRE does not recognise the concept.
+#' x <- c("Chloe", "Chlo\u00e9", "Chlo\u0065\u0301")
+#' stringi::stri_match_first_regex(x, "Chlo" %R% capture(grapheme()))
+#'
+#' # newline() matches three types of line ending: \r, \n, \r\n.
+#' # You can standardize line endings using
+#' stringi::stri_replace_all_regex("foo\nbar\r\nbaz\rquux", NEWLINE, "\n")
 #' @include constants.R
 #' @include grouping-and-repetition.R
 #' @name ClassGroups
@@ -182,42 +197,56 @@ any_char <- function(lo, hi)
 
 #' @rdname ClassGroups
 #' @export
-dgt <- function(lo, hi, char_class = TRUE)
+grapheme <- function(lo, hi)
+{
+  repeated(GRAPHEME, lo, hi, char_class = FALSE)
+}
+
+#' @rdname ClassGroups
+#' @export
+newline <- function(lo, hi)
+{
+  repeated(NEWLINE, lo, hi, char_class = FALSE)
+}
+
+#' @rdname ClassGroups
+#' @export
+dgt <- function(lo, hi, char_class = FALSE)
 {
   repeated(DGT, lo, hi, char_class = char_class)
 }
 
 #' @rdname ClassGroups
 #' @export
-wrd <- function(lo, hi, char_class = TRUE)
+wrd <- function(lo, hi, char_class = FALSE)
 {
   repeated(WRD, lo, hi, char_class = char_class)
 }
 
 #' @rdname ClassGroups
 #' @export
-spc <- function(lo, hi, char_class = TRUE)
+spc <- function(lo, hi, char_class = FALSE)
 {
   repeated(SPC, lo, hi, char_class = char_class)
 }
 
 #' @rdname ClassGroups
 #' @export
-not_dgt <- function(lo, hi, char_class = TRUE)
+not_dgt <- function(lo, hi, char_class = FALSE)
 {
   repeated(NOT_DGT, lo, hi, char_class = char_class)
 }
 
 #' @rdname ClassGroups
 #' @export
-not_wrd <- function(lo, hi, char_class = TRUE)
+not_wrd <- function(lo, hi, char_class = FALSE)
 {
   repeated(NOT_WRD, lo, hi, char_class = char_class)
 }
 
 #' @rdname ClassGroups
 #' @export
-not_spc <- function(lo, hi, char_class = TRUE)
+not_spc <- function(lo, hi, char_class = FALSE)
 {
   repeated(NOT_SPC, lo, hi, char_class = char_class)
 }

@@ -157,8 +157,12 @@ END <- as.regex("$")
 #' UPPER
 #' HEX_DIGIT
 #'
-#' # Generic classes
+#' # Special chars
 #' ANY_CHAR
+#' GRAPHEME
+#' NEWLINE
+#'
+#' # Generic classes
 #' DGT
 #' WRD
 #' SPC
@@ -236,6 +240,14 @@ HEX_DIGIT <- as.regex("[:xdigit:]")
 #' @rdname CharacterClasses
 #' @export
 ANY_CHAR <- as.regex(".")
+
+#' @rdname CharacterClasses
+#' @export
+GRAPHEME <- as.regex("\\X")
+
+#' @rdname CharacterClasses
+#' @export
+NEWLINE <- as.regex("\\R")
 
 #' @rdname CharacterClasses
 #' @export
